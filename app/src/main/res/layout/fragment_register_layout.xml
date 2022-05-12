@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo1"/>
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:textColor="@android:color/holo_green_dark"
+        android:text="LIN Task Tracker Registration"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/circleoutline"
+        android:layout_marginTop="10dp"
+        android:hint="First Name"
+        android:textSize="11sp"
+        android:padding="5dp"
+        android:id="@+id/firstName"
+        android:textColorHint="#99000000"
+        android:gravity="top"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/circleoutline"
+        android:layout_marginTop="10dp"
+        android:hint="Last Name"
+        android:id="@+id/lastName"
+        android:textSize="11sp"
+        android:padding="5dp"
+        android:textColorHint="#99000000"
+        android:gravity="top"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/circleoutline"
+        android:layout_marginTop="10dp"
+        android:hint="Email Address"
+        android:id="@+id/email"
+        android:textSize="11sp"
+        android:padding="5dp"
+        android:textColorHint="#99000000"
+        android:gravity="top"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:padding="6dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#99000000"
+            android:textSize="13sp"
+            android:text="Optional Info"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/articleNotifications"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#99000000"
+                android:textSize="12sp"
+                android:id="@+id/displayText"
+                android:layout_marginTop="2dp"
+                android:layout_weight="1"
+                android:singleLine="false"
+                android:text="You can skip the field below"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:background="@drawable/circleoutline"
+        android:layout_marginTop="10dp"
+        android:hint="Postal Address"
+        android:id="@+id/postalAddress"
+        android:textSize="11sp"
+        android:padding="5dp"
+        android:textColorHint="#99000000"
+        android:gravity="top"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="11sp"
+            android:layout_gravity="left"
+            android:padding="6dp"
+            android:id="@+id/submitReportButton"
+            android:text="Register here"
+            android:background="@drawable/color4_fill"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>
