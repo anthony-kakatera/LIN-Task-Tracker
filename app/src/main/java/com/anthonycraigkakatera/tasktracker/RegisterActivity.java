@@ -26,7 +26,7 @@ import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
     //getting all fields
-    private EditText firstName, lastName, email, postalAddress;
+    private EditText firstName, lastName, email, postalAddress, password;
     private TextView registerButton;
 
     private StaffMember tempStaffMember;;
@@ -62,6 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("first_name", firstName.getText().toString());
                 params.put("last_name", lastName.getText().toString());
+                params.put("password", password.getText().toString());
                 params.put("email_address", email.getText().toString());
                 params.put("postal_address", postalAddress.getText().toString());
                 return params;
@@ -79,7 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
                 JSONObject object = (JSONObject) jsonArray.get(i);
                 //create complete object
                 StaffMember staffMember = new StaffMember(
-                        object.getString("name"),
+                        object.getString("first_name") + " " + object.getString("last_name"),
                         object.getString("id"));
                 //adding to list
                 tempStaffMember = staffMember;
@@ -102,6 +103,7 @@ public class RegisterActivity extends AppCompatActivity {
         lastName = (EditText) findViewById(R.id.lastName);
         email = (EditText) findViewById(R.id.email);
         postalAddress = (EditText) findViewById(R.id.postalAddress);
+        password = (EditText) findViewById(R.id.password);
         registerButton = (TextView) findViewById(R.id.registerButton);
     }
 

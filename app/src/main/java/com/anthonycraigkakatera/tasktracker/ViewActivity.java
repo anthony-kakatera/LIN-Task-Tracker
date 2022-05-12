@@ -154,85 +154,87 @@ public class ViewActivity extends AppCompatActivity {
 
     private void downloadAssignedStaffMembers() {
         String url = mainUrl + "getAssignedStaffMembers.php";
-        StringRequest request=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                response -> processingAssignmentResponse(response),
+                error -> Toast.makeText(ViewActivity.this, "Task creation failed please check your connection", Toast.LENGTH_LONG).show()){
+            //Request parameters to the request
             @Override
-            public void onResponse(String response) {
-                //weatherData.setText("Response is :- ");
-                try {
-                    JSONArray jsonArray = new JSONArray(response);
-                    for (int i = 0; i <jsonArray.length() ; i++) {
-                        JSONObject object = (JSONObject) jsonArray.get(i);
-                        //create complete object
-                        StaffMember staffMember = new StaffMember(
-                                object.getString("name"),
-                                object.getString("id"));
-                        //adding to list
-                        staffMemberList.add(staffMember);
-                    }
-                    //updating UI
-                    for(StaffMember staffMember : staffMemberList){
-                        tempAssignedStaff = tempAssignedStaff + staffMember + "\n";
-                    }
-                    //set the text
-                    assigned.setText(tempAssignedStaff);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("task_id", taskID);
+                return params;
             }
+        };
+        //Send the request to the API
+        RequestQueue queue = Volley.newRequestQueue(ViewActivity.this);
+        queue.add(stringRequest);
+    }
 
-
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
+    private void processingAssignmentResponse(String response) {
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+            for (int i = 0; i <jsonArray.length() ; i++) {
+                JSONObject object = (JSONObject) jsonArray.get(i);
+                //create complete object
+                StaffMember staffMember = new StaffMember(
+                        object.getString("name"),
+                        object.getString("id"));
+                //adding to list
+                staffMemberList.add(staffMember);
             }
-        });
-        RequestQueue requestQueue = Volley.newRequestQueue(ViewActivity.this);
-        requestQueue.add(request);
+            //updating UI
+            for(StaffMember staffMember : staffMemberList){
+                tempAssignedStaff = tempAssignedStaff + staffMember + "\n";
+            }
+            //set the text
+            assigned.setText(tempAssignedStaff);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void downloadTaskContent() {
         String url = mainUrl + "getSpecificTasks.php";
-        StringRequest request=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                response -> processingDownloadedTaskResponse(response),
+                error -> Toast.makeText(ViewActivity.this, "Task creation failed please check your connection", Toast.LENGTH_LONG).show()){
+            //Request parameters to the request
             @Override
-            public void onResponse(String response) {
-                //weatherData.setText("Response is :- ");
-                try {
-                    JSONArray jsonArray = new JSONArray(response);
-                    for (int i = 0; i <jsonArray.length() ; i++) {
-                        JSONObject object = (JSONObject) jsonArray.get(i);
-                        //create complete object
-                        GeneralTask generalTask = new GeneralTask(
-                                object.getString("title"),
-                                object.getString("dueDate"),
-                                object.getString("description"),
-                                object.getString("status"),
-                                object.getString("id"));
-                        //adding to list
-                        newGeneralTask = generalTask;
-                    }
-                    //updating UI
-                    title.setText(newGeneralTask.getTitle());
-                    description.setText(newGeneralTask.getDescription());
-                    dueDate.setText(newGeneralTask.getDueDate());
-                    status.setText(newGeneralTask.getStatus());
-                    //now download assigned staff members
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("task_id", taskID);
+                return params;
             }
+        };
+        //Send the request to the API
+        RequestQueue queue = Volley.newRequestQueue(ViewActivity.this);
+        queue.add(stringRequest);
+    }
 
-
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
+    private void processingDownloadedTaskResponse(String response) {
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+            for (int i = 0; i <jsonArray.length() ; i++) {
+                JSONObject object = (JSONObject) jsonArray.get(i);
+                //create complete object
+                GeneralTask generalTask = new GeneralTask(
+                        object.getString("title"),
+                        object.getString("dueDate"),
+                        object.getString("description"),
+                        object.getString("status"),
+                        object.getString("id"));
+                //adding to list
+                newGeneralTask = generalTask;
             }
-        });
-        RequestQueue requestQueue = Volley.newRequestQueue(ViewActivity.this);
-        requestQueue.add(request);
+            //updating UI
+            title.setText(newGeneralTask.getTitle());
+            description.setText(newGeneralTask.getDescription());
+            dueDate.setText(newGeneralTask.getDueDate());
+            status.setText(newGeneralTask.getStatus());
+            //now download assigned staff members
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void submitComment(){

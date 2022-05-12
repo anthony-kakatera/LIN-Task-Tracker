@@ -30,7 +30,7 @@
         android:id="@+id/username"
         android:background="@drawable/circleoutline"
         android:layout_marginTop="10dp"
-        android:hint="Username"
+        android:hint="email"
         android:textSize="11sp"
         android:padding="5dp"
         android:textColorHint="#99000000"

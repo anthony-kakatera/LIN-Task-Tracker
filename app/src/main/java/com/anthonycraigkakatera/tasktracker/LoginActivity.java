@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                 JSONObject object = (JSONObject) jsonArray.get(i);
                 //create complete object
                 StaffMember staffMember = new StaffMember(
-                        object.getString("name"),
+                        object.getString("first_name") + " " + object.getString("last_name"),
                         object.getString("id"));
                 //adding to list
                 tempStaffMember = staffMember;

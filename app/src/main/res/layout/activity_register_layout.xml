@@ -51,6 +51,21 @@
         android:gravity="top"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/circleoutline"
+        android:layout_marginTop="10dp"
+        android:hint="Password"
+        android:id="@+id/password"
+        android:textSize="11sp"
+        android:padding="5dp"
+        android:textColorHint="#99000000"
+        android:gravity="top"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"/>
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="30dp"
