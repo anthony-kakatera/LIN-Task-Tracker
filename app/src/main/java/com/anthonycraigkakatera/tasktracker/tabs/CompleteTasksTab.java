@@ -94,12 +94,12 @@ public class CompleteTasksTab extends Fragment {
                     //toggle on
                     toggleOn(completeTaskViewHolder, completeTask);
                     //adjusting the status at the backend
-                    toggleStatus(completeTask, "complete");
+                    toggleStatus(completeTask, "2");
                 }else{
                     //toggle off
                     toggleOff(completeTaskViewHolder, completeTask);
                     //adjusting the status at the backend
-                    toggleStatus(completeTask, "incomplete");
+                    toggleStatus(completeTask, "1");
                 }
             }
         };
