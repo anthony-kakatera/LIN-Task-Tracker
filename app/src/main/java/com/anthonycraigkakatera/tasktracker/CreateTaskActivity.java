@@ -80,13 +80,13 @@ public class CreateTaskActivity extends AppCompatActivity {
     private String ifChecked() {
         if(incomplete.isChecked())
         {
-            return "incomplete";
+            return "1";
         }else if(completed.isChecked())
         {
             // is checked
-            return "completed";
+            return "2";
         }
-        return "incomplete";
+        return "1";
     }
 
     private void activateDueDateFeature() {

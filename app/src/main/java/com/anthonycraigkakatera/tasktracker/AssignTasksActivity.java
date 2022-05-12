@@ -2,17 +2,21 @@ package com.anthonycraigkakatera.tasktracker;
 
 import static com.anthonycraigkakatera.tasktracker.MainActivity.mainUrl;
 
+import android.app.Notification;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -30,7 +34,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AssignTasksActivity extends AppCompatActivity {
     public AssignTaskAdapter.OnItemClickListener clickListener;
@@ -96,12 +102,53 @@ public class AssignTasksActivity extends AppCompatActivity {
             @Override
             public void onClick(StaffMemberAdapter.StaffMemberViewHolder staffMemberViewHolder, StaffMember staffMember) {
                 //bring popup here then assign
+                if(heldGeneralTask != null){
+                    assignmentPopup(staffMember);
+                }else{
+                    Toast.makeText(AssignTasksActivity.this, "Please select a task then select an employee", Toast.LENGTH_LONG).show();
+                }
             }
         };
 
         //downloading json data via volley api and then update interface upon completion
         downloadTasksContent(tasksRecyclerView, clickListener);
         downloadStaffContent(staffRecyclerView, clickListener2);
+    }
+
+    private void assignmentPopup(StaffMember staffMember){
+        new AlertDialog.Builder(AssignTasksActivity.this)
+                .setTitle("Assignment Confirmation")
+                .setMessage(
+                        "Do you wish to assign"+ heldGeneralTask.getTitle() +"to " + staffMember.getName()
+                )
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //Post the request
+                        sendAssignmentPostToAPI(staffMember);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .show();
+    }
+
+    private void sendAssignmentPostToAPI(StaffMember staffMember) {
+        String url = mainUrl + "assignTask.php";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                response -> Toast.makeText(AssignTasksActivity.this, "Task assigned successfully", Toast.LENGTH_LONG).show(),
+                error -> Toast.makeText(AssignTasksActivity.this, "Task assignment failed", Toast.LENGTH_LONG).show()){
+            //Request parameters to the request
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("task_id", heldGeneralTask.getId());
+                params.put("staff_id", staffMember.getId());
+                return params;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(AssignTasksActivity.this);
+        queue.add(stringRequest);
     }
 
     private void downloadTasksContent(RecyclerView recyclerView, AssignTaskAdapter.OnItemClickListener clickListener) {
