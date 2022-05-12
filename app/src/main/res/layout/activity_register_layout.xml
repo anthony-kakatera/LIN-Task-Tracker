@@ -127,7 +127,7 @@
             android:textSize="11sp"
             android:layout_gravity="left"
             android:padding="6dp"
-            android:id="@+id/submitReportButton"
+            android:id="@+id/registerButton"
             android:text="Register here"
             android:background="@drawable/color4_fill"
             android:textStyle="bold"
