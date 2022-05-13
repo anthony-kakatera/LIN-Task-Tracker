@@ -57,11 +57,18 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void sendForm() {
-        if(!firstName.getText().toString().isEmpty() && !lastName.getText().toString().isEmpty()){
-            if(!email.getText().toString().isEmpty()){
-                postToAPI();
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!firstName.getText().toString().isEmpty() && !lastName.getText().toString().isEmpty() && !postalAddress.getText().toString().isEmpty()){
+                    if(!email.getText().toString().isEmpty()){
+                        postToAPI();
+                    }
+                }else{
+                    Toast.makeText(RegisterActivity.this, "Please complete the form by filling in all fields", Toast.LENGTH_LONG).show();
+                }
             }
-        }
+        });
     }
 
     private void postToAPI() {

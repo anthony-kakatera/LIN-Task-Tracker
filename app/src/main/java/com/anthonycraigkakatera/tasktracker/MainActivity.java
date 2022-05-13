@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     //used to swap fragments in an activity
     private ViewPager viewPager;
     //the main url of the backend
-    public static String mainUrl ="";
+    public static String mainUrl ="https://coresoftwaredevelopmentcompany.online/luk/";
     //creating tabs
     //Default tabs to swap out the fragments upon clicking the nav bar atop the screen
     HomeTab homeTab = new HomeTab();

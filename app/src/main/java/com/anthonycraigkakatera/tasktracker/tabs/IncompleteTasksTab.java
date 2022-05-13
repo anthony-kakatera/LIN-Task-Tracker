@@ -159,7 +159,7 @@ public class IncompleteTasksTab extends Fragment {
                 //create incomplete object
                 IncompleteTask incompleteTask = new IncompleteTask(
                         object.getString("title"),
-                        object.getString("dueDate"),
+                        object.getString("due_date"),
                         object.getString("description"),
                         object.getString("status"),
                         object.getString("id"));

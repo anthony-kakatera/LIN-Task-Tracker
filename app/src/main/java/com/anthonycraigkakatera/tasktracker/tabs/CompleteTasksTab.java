@@ -134,7 +134,7 @@ public class CompleteTasksTab extends Fragment {
                 //create complete object
                 CompleteTask completeTask = new CompleteTask(
                         object.getString("title"),
-                        object.getString("dueDate"),
+                        object.getString("due_date"),
                         object.getString("description"),
                         object.getString("status"),
                         object.getString("id"));
