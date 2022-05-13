@@ -9,15 +9,40 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LukTaskTracker">
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
+
+        <activity android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden">
+        </activity>
+        <activity android:name=".SplashScreenActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AssignTasksActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".CreateTaskActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".RegisterActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".ViewActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize"/>
+
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

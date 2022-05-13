@@ -6,6 +6,7 @@ import static com.anthonycraigkakatera.tasktracker.ViewActivity.intentKey;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +52,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login() {
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendCredentialsToAPI();
+            }
+        });
+
+
+
+    }
+
+    private void sendCredentialsToAPI() {
         String url = mainUrl + "login.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 response -> processResponse(response),
@@ -86,15 +99,24 @@ public class LoginActivity extends AppCompatActivity {
             intent.putExtra("name", tempStaffMember.getName());
             intent.putExtra("id", tempStaffMember.getId());
             LoginActivity.this.startActivity(intent);
+            //closing this activity
+            LoginActivity.this.finish();
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
     private void register() {
-        //here we just open a new register activity and pass the login details
-        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-        LoginActivity.this.startActivity(intent);
+        signUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //here we just open a new register activity and pass the login details
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                LoginActivity.this.startActivity(intent);
+                //closing this activity
+                LoginActivity.this.finish();
+            }
+        });
     }
 
     private void inflateViews() {
