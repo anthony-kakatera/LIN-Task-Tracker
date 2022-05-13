@@ -1,6 +1,7 @@
 package com.anthonycraigkakatera.tasktracker.tabs;
 
 import static com.anthonycraigkakatera.tasktracker.MainActivity.mainUrl;
+import static com.anthonycraigkakatera.tasktracker.MainActivity.yourLoginDetails;
 import static com.anthonycraigkakatera.tasktracker.ViewActivity.intentKey;
 
 import android.content.Context;
@@ -109,42 +110,43 @@ public class CompleteTasksTab extends Fragment {
 
     private void downloadContent(RecyclerView recyclerView, CompleteTasksAdapter.OnItemClickListener clickListener) {
         String url = mainUrl + "getCompleteTasks.php";
-        StringRequest request=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                response -> processAllTasksRetrieval(response, recyclerView, clickListener),
+                error -> Toast.makeText(getContext(), "Task assignment failed", Toast.LENGTH_LONG).show()){
+            //Request parameters to the request
             @Override
-            public void onResponse(String response) {
-                //weatherData.setText("Response is :- ");
-                try {
-                    JSONArray jsonArray = new JSONArray(response);
-                    for (int i = 0; i <jsonArray.length() ; i++) {
-                        JSONObject object = (JSONObject) jsonArray.get(i);
-                        //create complete object
-                        CompleteTask completeTask = new CompleteTask(
-                                object.getString("title"),
-                                object.getString("dueDate"),
-                                object.getString("description"),
-                                object.getString("status"),
-                                object.getString("id"));
-                        //adding to list
-                        completeTaskList.add(completeTask);
-                    }
-                    //updating UI
-                    adapter = new CompleteTasksAdapter(clickListener, completeTaskList, getContext());
-                    recyclerView.setAdapter(adapter);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("staff_id", yourLoginDetails.getId());
+                return params;
             }
+        };
 
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+        queue.add(stringRequest);
+    }
 
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
+    private void processAllTasksRetrieval(String response, RecyclerView recyclerView, CompleteTasksAdapter.OnItemClickListener clickListener) {
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+            for (int i = 0; i <jsonArray.length() ; i++) {
+                JSONObject object = (JSONObject) jsonArray.get(i);
+                //create complete object
+                CompleteTask completeTask = new CompleteTask(
+                        object.getString("title"),
+                        object.getString("dueDate"),
+                        object.getString("description"),
+                        object.getString("status"),
+                        object.getString("id"));
+                //adding to list
+                completeTaskList.add(completeTask);
             }
-        });
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        requestQueue.add(request);
+            //updating UI
+            adapter = new CompleteTasksAdapter(clickListener, completeTaskList, getContext());
+            recyclerView.setAdapter(adapter);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void openActivity(CompleteTask completeTask) {

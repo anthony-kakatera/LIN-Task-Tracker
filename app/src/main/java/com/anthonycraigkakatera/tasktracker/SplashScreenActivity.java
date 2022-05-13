@@ -27,8 +27,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splashscreen_layout);
-        //dissapearing title bar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         //used to launch the entire app
         launchApp();
     }

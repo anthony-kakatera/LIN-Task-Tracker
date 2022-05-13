@@ -36,8 +36,6 @@ public class CreateTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_task_layout);
-        //dissapearing title bar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         //inflating views
         inflateViews();
         //activate dueDate

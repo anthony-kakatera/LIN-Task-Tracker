@@ -4,6 +4,7 @@ import static com.anthonycraigkakatera.tasktracker.MainActivity.mainUrl;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,7 +28,7 @@ import java.util.Map;
 public class RegisterActivity extends AppCompatActivity {
     //getting all fields
     private EditText firstName, lastName, email, postalAddress, password;
-    private TextView registerButton;
+    private TextView registerButton, back;
 
     private StaffMember tempStaffMember;;
 
@@ -35,12 +36,24 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_layout);
-        //dissapearing title bar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         //inflate
         inflateView();
         //submit form to API
         sendForm();
+        //back button
+        backToLogin();
+    }
+
+    private void backToLogin() {
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                RegisterActivity.this.startActivity(intent);
+                //closing this activity
+                RegisterActivity.this.finish();
+            }
+        });
     }
 
     private void sendForm() {
@@ -105,6 +118,7 @@ public class RegisterActivity extends AppCompatActivity {
         postalAddress = (EditText) findViewById(R.id.postalAddress);
         password = (EditText) findViewById(R.id.password);
         registerButton = (TextView) findViewById(R.id.registerButton);
+        back = (TextView) findViewById(R.id.back);
     }
 
 }

@@ -42,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //dissapearing title bar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         //adding tabs to control view pager
         addTabs();
         //getting the login details from login activity

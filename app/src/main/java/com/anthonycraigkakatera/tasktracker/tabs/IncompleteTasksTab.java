@@ -1,6 +1,7 @@
 package com.anthonycraigkakatera.tasktracker.tabs;
 
 import static com.anthonycraigkakatera.tasktracker.MainActivity.mainUrl;
+import static com.anthonycraigkakatera.tasktracker.MainActivity.yourLoginDetails;
 import static com.anthonycraigkakatera.tasktracker.ViewActivity.intentKey;
 
 import android.content.Context;
@@ -25,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.anthonycraigkakatera.tasktracker.AssignTasksActivity;
 import com.anthonycraigkakatera.tasktracker.R;
 import com.anthonycraigkakatera.tasktracker.ViewActivity;
 import com.anthonycraigkakatera.tasktracker.adapters.IncompleteTasksAdapter;
@@ -133,42 +135,43 @@ public class IncompleteTasksTab extends Fragment {
 
     private void downloadContent(RecyclerView recyclerView, IncompleteTasksAdapter.OnItemClickListener clickListener) {
         String url = mainUrl + "getIncompleteTasks.php";
-        StringRequest request=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                response -> processAllTasksRetrieval(response, recyclerView, clickListener),
+                error -> Toast.makeText(getContext(), "Task assignment failed", Toast.LENGTH_LONG).show()){
+            //Request parameters to the request
             @Override
-            public void onResponse(String response) {
-                //weatherData.setText("Response is :- ");
-                try {
-                    JSONArray jsonArray = new JSONArray(response);
-                    for (int i = 0; i <jsonArray.length() ; i++) {
-                        JSONObject object = (JSONObject) jsonArray.get(i);
-                        //create incomplete object
-                        IncompleteTask incompleteTask = new IncompleteTask(
-                                object.getString("title"),
-                                object.getString("dueDate"),
-                                object.getString("description"),
-                                object.getString("status"),
-                                object.getString("id"));
-                        //adding to list
-                        incompleteTaskList.add(incompleteTask);
-                    }
-                    //updating UI
-                    adapter = new IncompleteTasksAdapter(clickListener, incompleteTaskList, getContext());
-                    recyclerView.setAdapter(adapter);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("staff_id", yourLoginDetails.getId());
+                return params;
             }
+        };
 
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+        queue.add(stringRequest);
+    }
 
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
+    private void processAllTasksRetrieval(String response, RecyclerView recyclerView, IncompleteTasksAdapter.OnItemClickListener clickListener) {
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+            for (int i = 0; i <jsonArray.length() ; i++) {
+                JSONObject object = (JSONObject) jsonArray.get(i);
+                //create incomplete object
+                IncompleteTask incompleteTask = new IncompleteTask(
+                        object.getString("title"),
+                        object.getString("dueDate"),
+                        object.getString("description"),
+                        object.getString("status"),
+                        object.getString("id"));
+                //adding to list
+                incompleteTaskList.add(incompleteTask);
             }
-        });
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        requestQueue.add(request);
+            //updating UI
+            adapter = new IncompleteTasksAdapter(clickListener, incompleteTaskList, getContext());
+            recyclerView.setAdapter(adapter);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void toggleOn(IncompleteTasksAdapter.InompleteTaskViewHolder inompleteTaskViewHolder, IncompleteTask incompleteTask){

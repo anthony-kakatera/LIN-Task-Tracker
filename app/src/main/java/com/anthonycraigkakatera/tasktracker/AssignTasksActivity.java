@@ -57,8 +57,6 @@ public class AssignTasksActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task_assignment_layout);
         //inflating title to display an active task
         title = (TextView) findViewById(R.id.taskName);
-        //dissapearing title bar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         //load genral tasks recycler
         RecyclerView tasksRecyclerView = findViewById(R.id.completedTasksRecyclerView);
         RecyclerView staffRecyclerView = findViewById(R.id.staffMemberRecycler);
