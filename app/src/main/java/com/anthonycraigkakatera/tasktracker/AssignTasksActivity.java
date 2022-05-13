@@ -1,6 +1,7 @@
 package com.anthonycraigkakatera.tasktracker;
 
 import static com.anthonycraigkakatera.tasktracker.MainActivity.mainUrl;
+import static com.anthonycraigkakatera.tasktracker.MainActivity.yourLoginDetails;
 
 import android.app.Notification;
 import android.content.Context;
@@ -152,43 +153,42 @@ public class AssignTasksActivity extends AppCompatActivity {
     }
 
     private void downloadTasksContent(RecyclerView recyclerView, AssignTaskAdapter.OnItemClickListener clickListener) {
+        //so here simply get all the tasks you created so you can assign them
         String url = mainUrl + "getAllTasks.php";
-        StringRequest request=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                response -> processAllTasksRetrieval(response, recyclerView, clickListener2),
+                error -> Toast.makeText(AssignTasksActivity.this, "Task assignment failed", Toast.LENGTH_LONG).show()){
+            //Request parameters to the request
             @Override
-            public void onResponse(String response) {
-                //weatherData.setText("Response is :- ");
-                try {
-                    JSONArray jsonArray = new JSONArray(response);
-                    for (int i = 0; i <jsonArray.length() ; i++) {
-                        JSONObject object = (JSONObject) jsonArray.get(i);
-                        //create complete object
-                        GeneralTask generalTask = new GeneralTask(
-                                object.getString("title"),
-                                object.getString("dueDate"),
-                                object.getString("description"),
-                                object.getString("status"),
-                                object.getString("id"));
-                        //adding to list
-                        generalTaskList.add(generalTask);
-                    }
-                    //updating UI
-                    adapter = new AssignTaskAdapter(clickListener, generalTaskList, AssignTasksActivity.this);
-                    recyclerView.setAdapter(adapter);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("staff_id", yourLoginDetails.getId());
+                return params;
             }
+        };
 
+        RequestQueue queue = Volley.newRequestQueue(AssignTasksActivity.this);
+        queue.add(stringRequest);
+    }
 
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
+    private void processAllTasksRetrieval(String response, RecyclerView recyclerView, StaffMemberAdapter.OnItemClickListener clickListener) {
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+            for (int i = 0; i <jsonArray.length() ; i++) {
+                JSONObject object = (JSONObject) jsonArray.get(i);
+                //create complete object
+                StaffMember staffMember = new StaffMember(
+                        object.getString("name"),
+                        object.getString("id"));
+                //adding to list
+                staffMemberList.add(staffMember);
             }
-        });
-        RequestQueue requestQueue = Volley.newRequestQueue(AssignTasksActivity.this);
-        requestQueue.add(request);
+            //updating UI
+            adapter2 = new StaffMemberAdapter(clickListener, staffMemberList, AssignTasksActivity.this);
+            recyclerView.setAdapter(adapter2);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void downloadStaffContent(RecyclerView recyclerView, StaffMemberAdapter.OnItemClickListener clickListener) {
