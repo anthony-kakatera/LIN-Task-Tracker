@@ -36,6 +36,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,7 @@ public class CompleteTasksTab extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     public CompleteTasksAdapter.OnItemClickListener clickListener;
     public CompleteTasksAdapter adapter;
-    private List<CompleteTask> completeTaskList;
+    private List<CompleteTask> completeTaskList = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -136,7 +137,7 @@ public class CompleteTasksTab extends Fragment {
                         object.getString("title"),
                         object.getString("due_date"),
                         object.getString("description"),
-                        object.getString("status"),
+                        object.getString("state"),
                         object.getString("id"));
                 //adding to list
                 completeTaskList.add(completeTask);

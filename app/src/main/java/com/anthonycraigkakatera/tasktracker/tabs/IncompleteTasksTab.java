@@ -36,6 +36,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,7 @@ public class IncompleteTasksTab extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     public static  IncompleteTasksAdapter.OnItemClickListener clickListener;
     public static  IncompleteTasksAdapter adapter;
-    private List<IncompleteTask> incompleteTaskList;
+    private List<IncompleteTask> incompleteTaskList = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -161,7 +162,7 @@ public class IncompleteTasksTab extends Fragment {
                         object.getString("title"),
                         object.getString("due_date"),
                         object.getString("description"),
-                        object.getString("status"),
+                        object.getString("state"),
                         object.getString("id"));
                 //adding to list
                 incompleteTaskList.add(incompleteTask);

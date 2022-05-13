@@ -81,26 +81,30 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void processResponse(String response) {
-        try {
-            JSONArray jsonArray = new JSONArray(response);
-            for (int i = 0; i <jsonArray.length() ; i++) {
-                JSONObject object = (JSONObject) jsonArray.get(i);
-                //create complete object
-                StaffMember staffMember = new StaffMember(
-                        object.getString("first_name") + " " + object.getString("last_name"),
-                        object.getString("id"));
-                //adding to list
-                tempStaffMember = staffMember;
+        if(response.length() > 3){
+            try {
+                JSONArray jsonArray = new JSONArray(response);
+                for (int i = 0; i <jsonArray.length() ; i++) {
+                    JSONObject object = (JSONObject) jsonArray.get(i);
+                    //create complete object
+                    StaffMember staffMember = new StaffMember(
+                            object.getString("first_name") + " " + object.getString("last_name"),
+                            object.getString("id"));
+                    //adding to list
+                    tempStaffMember = staffMember;
+                }
+                //here we just open a new main activity and pass the login details
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra("name", tempStaffMember.getName());
+                intent.putExtra("id", tempStaffMember.getId());
+                LoginActivity.this.startActivity(intent);
+                //closing this activity
+                LoginActivity.this.finish();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            //here we just open a new main activity and pass the login details
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            intent.putExtra("name", tempStaffMember.getName());
-            intent.putExtra("id", tempStaffMember.getId());
-            LoginActivity.this.startActivity(intent);
-            //closing this activity
-            LoginActivity.this.finish();
-        } catch (JSONException e) {
-            e.printStackTrace();
+        }else {
+            Toast.makeText(LoginActivity.this, "Please try again your login credentials were rejected", Toast.LENGTH_LONG).show();
         }
     }
 
