@@ -63,6 +63,8 @@ public class CompleteTasksAdapter  extends RecyclerView.Adapter<CompleteTasksAda
             title = (TextView) itemView.findViewById(R.id.title);
             dueDate = (TextView) itemView.findViewById(R.id.dueDate);
             button = (ToggleButton) itemView.findViewById(R.id.statusToggleButton);
+
+            button.setChecked(true);
         }
 
         public void bind(final CompleteTaskViewHolder completeTaskViewHolder, final CompleteTask completeTask, final OnItemClickListener listener){
@@ -85,5 +87,11 @@ public class CompleteTasksAdapter  extends RecyclerView.Adapter<CompleteTasksAda
     public interface OnItemClickListener {
         void onClick(CompleteTasksAdapter.CompleteTaskViewHolder completeTaskViewHolder, CompleteTask completeTask);
         void onClickToggle(CompleteTasksAdapter.CompleteTaskViewHolder completeTaskViewHolder, CompleteTask completeTask);
+    }
+
+    public  void refreshList(List<CompleteTask> newList){
+        mValues.clear();
+        mValues.addAll(newList);
+        notifyDataSetChanged();
     }
 }

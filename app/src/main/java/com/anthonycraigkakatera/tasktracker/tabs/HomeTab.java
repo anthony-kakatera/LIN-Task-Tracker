@@ -108,6 +108,7 @@ public class HomeTab extends Fragment {
             public void onClick(View v) {
                 //open new assign task activity
                 openAssignActivity();
+                System.out.println(" ------------------------------------------------------- here");
             }
         });
         completedTaskButton.setOnClickListener(new View.OnClickListener() {

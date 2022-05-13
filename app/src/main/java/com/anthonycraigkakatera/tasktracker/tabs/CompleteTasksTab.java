@@ -48,6 +48,8 @@ public class CompleteTasksTab extends Fragment {
     public CompleteTasksAdapter adapter;
     private List<CompleteTask> completeTaskList = new ArrayList<>();
 
+    public static View heldView;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +80,7 @@ public class CompleteTasksTab extends Fragment {
         }else{
 
         }
+        heldView = view;
         return view;
     }
 
@@ -97,11 +100,15 @@ public class CompleteTasksTab extends Fragment {
                     toggleOn(completeTaskViewHolder, completeTask);
                     //adjusting the status at the backend
                     toggleStatus(completeTask, "2");
+                    //rfresh list
+
                 }else{
                     //toggle off
                     toggleOff(completeTaskViewHolder, completeTask);
                     //adjusting the status at the backend
                     toggleStatus(completeTask, "1");
+                    //rfresh list
+
                 }
             }
         };

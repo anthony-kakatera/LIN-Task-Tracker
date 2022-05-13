@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.anthonycraigkakatera.tasktracker.R;
+import com.anthonycraigkakatera.tasktracker.model.CompleteTask;
 import com.anthonycraigkakatera.tasktracker.model.IncompleteTask;
 
 import java.util.List;
@@ -86,5 +87,11 @@ public class IncompleteTasksAdapter extends RecyclerView.Adapter<IncompleteTasks
     public interface OnItemClickListener {
         void onClick(InompleteTaskViewHolder inompleteTaskViewHolder, IncompleteTask incompleteTask);
         void onClickToggle(InompleteTaskViewHolder inompleteTaskViewHolder, IncompleteTask incompleteTask);
+    }
+
+    public  void refreshList(List<IncompleteTask> newList){
+        mValues.clear();
+        mValues.addAll(newList);
+        notifyDataSetChanged();
     }
 }

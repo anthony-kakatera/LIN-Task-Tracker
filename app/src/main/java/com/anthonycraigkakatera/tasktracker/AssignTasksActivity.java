@@ -26,15 +26,18 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.anthonycraigkakatera.tasktracker.adapters.AssignTaskAdapter;
 import com.anthonycraigkakatera.tasktracker.adapters.CompleteTasksAdapter;
+import com.anthonycraigkakatera.tasktracker.adapters.IncompleteTasksAdapter;
 import com.anthonycraigkakatera.tasktracker.adapters.StaffMemberAdapter;
 import com.anthonycraigkakatera.tasktracker.model.CompleteTask;
 import com.anthonycraigkakatera.tasktracker.model.GeneralTask;
+import com.anthonycraigkakatera.tasktracker.model.IncompleteTask;
 import com.anthonycraigkakatera.tasktracker.model.StaffMember;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,12 +47,12 @@ public class AssignTasksActivity extends AppCompatActivity {
     public StaffMemberAdapter.OnItemClickListener clickListener2;
     public AssignTaskAdapter adapter;
     public StaffMemberAdapter adapter2;
-    private List<GeneralTask> generalTaskList;
-    private List<StaffMember> staffMemberList;
+    private List<GeneralTask> generalTaskList = new ArrayList<>();
+    private List<StaffMember> staffMemberList = new ArrayList<>();
     private int mColumnCount = 1;
     public GeneralTask heldGeneralTask;
 
-    private TextView title;
+    private TextView title, back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +60,9 @@ public class AssignTasksActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task_assignment_layout);
         //inflating title to display an active task
         title = (TextView) findViewById(R.id.taskName);
+        back = (TextView) findViewById(R.id.back);
         //load genral tasks recycler
-        RecyclerView tasksRecyclerView = findViewById(R.id.completedTasksRecyclerView);
+        RecyclerView tasksRecyclerView = findViewById(R.id.generalTasksRecyclerView);
         RecyclerView staffRecyclerView = findViewById(R.id.staffMemberRecycler);
         // Set the adapter
         if (tasksRecyclerView instanceof RecyclerView) {
@@ -84,6 +88,12 @@ public class AssignTasksActivity extends AppCompatActivity {
         }else{
 
         }
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     public void setRecyclerAdapter(RecyclerView tasksRecyclerView, RecyclerView staffRecyclerView){
@@ -110,6 +120,7 @@ public class AssignTasksActivity extends AppCompatActivity {
         };
 
         //downloading json data via volley api and then update interface upon completion
+
         downloadTasksContent(tasksRecyclerView, clickListener);
         downloadStaffContent(staffRecyclerView, clickListener2);
     }
@@ -154,7 +165,7 @@ public class AssignTasksActivity extends AppCompatActivity {
         //so here simply get all the tasks you created so you can assign them
         String url = mainUrl + "getAllTasks.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                response -> processAllTasksRetrieval(response, recyclerView, clickListener2),
+                response -> processAllTasksRetrieval(response, recyclerView, clickListener),
                 error -> Toast.makeText(AssignTasksActivity.this, "Task assignment failed", Toast.LENGTH_LONG).show()){
             //Request parameters to the request
             @Override
@@ -169,21 +180,25 @@ public class AssignTasksActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    private void processAllTasksRetrieval(String response, RecyclerView recyclerView, StaffMemberAdapter.OnItemClickListener clickListener) {
+    private void processAllTasksRetrieval(String response, RecyclerView recyclerView, AssignTaskAdapter.OnItemClickListener clickListener) {
         try {
             JSONArray jsonArray = new JSONArray(response);
             for (int i = 0; i <jsonArray.length() ; i++) {
                 JSONObject object = (JSONObject) jsonArray.get(i);
-                //create complete object
-                StaffMember staffMember = new StaffMember(
-                        object.getString("name"),
+                //create incomplete object
+                GeneralTask generalTask = new GeneralTask(
+                        object.getString("title"),
+                        object.getString("due_date"),
+                        object.getString("description"),
+                        object.getString("state"),
                         object.getString("id"));
                 //adding to list
-                staffMemberList.add(staffMember);
+                generalTaskList.add(generalTask);
             }
             //updating UI
-            adapter2 = new StaffMemberAdapter(clickListener, staffMemberList, AssignTasksActivity.this);
-            recyclerView.setAdapter(adapter2);
+            System.out.println(" ----------------333-----------------------------------------------------------   " + generalTaskList.size());
+            adapter = new AssignTaskAdapter(clickListener, generalTaskList, AssignTasksActivity.this);
+            recyclerView.setAdapter(adapter);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -201,7 +216,7 @@ public class AssignTasksActivity extends AppCompatActivity {
                         JSONObject object = (JSONObject) jsonArray.get(i);
                         //create complete object
                         StaffMember staffMember = new StaffMember(
-                                object.getString("name"),
+                                object.getString("first_name") + " " + object.getString("first_name"),
                                 object.getString("id"));
                         //adding to list
                         staffMemberList.add(staffMember);
