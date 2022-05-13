@@ -33,6 +33,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/back"
             android:drawableTint="@android:color/holo_green_dark"
             android:drawableLeft="@drawable/baseline_arrow_back_ios_white_24"
             android:layout_marginTop="13dp"
@@ -137,15 +138,13 @@
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"/>
 
-    <EditText
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:id="@+id/date"
         android:background="@drawable/circleoutline"
         android:layout_marginTop="10dp"
-        android:hint="Due Date 20/12/22"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
+        android:text="Due Date 20/12/22"
         android:textSize="11sp"
         android:padding="5dp"
         android:textColorHint="#99000000"
@@ -339,7 +338,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="Newly added tasks can be found here"
+                        android:text="Newly added tasks are found on the incomplete tab"
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         android:textSize="12sp"
                         android:textStyle="bold"
                         android:textColor="#99000000"/>

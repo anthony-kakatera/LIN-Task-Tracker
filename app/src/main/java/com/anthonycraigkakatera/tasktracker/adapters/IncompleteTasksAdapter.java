@@ -43,6 +43,7 @@ public class IncompleteTasksAdapter extends RecyclerView.Adapter<IncompleteTasks
 
         //bind
         holder.bind(holder,incompleteTask, listener);
+        System.out.println(" -------------------------------------------------------------------- WELL BINDING");
     }
 
     @Override

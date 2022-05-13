@@ -170,6 +170,7 @@ public class IncompleteTasksTab extends Fragment {
             //updating UI
             adapter = new IncompleteTasksAdapter(clickListener, incompleteTaskList, getContext());
             recyclerView.setAdapter(adapter);
+            System.out.println(" ------------------------------------------------------------------------   " + incompleteTaskList.size());
         } catch (JSONException e) {
             e.printStackTrace();
         }

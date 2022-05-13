@@ -1,6 +1,7 @@
 package com.anthonycraigkakatera.tasktracker;
 
 import static com.anthonycraigkakatera.tasktracker.MainActivity.mainUrl;
+import static com.anthonycraigkakatera.tasktracker.MainActivity.yourLoginDetails;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -26,9 +27,9 @@ import java.util.Locale;
 import java.util.Map;
 
 public class CreateTaskActivity extends AppCompatActivity {
-    private EditText title, dueDate, description;
+    private EditText title, description;
     private RadioButton completed, incomplete;
-    private TextView createTaskButton;
+    private TextView createTaskButton, dueDate, back;
 
     private final Calendar calendar = Calendar.getInstance();
 
@@ -42,6 +43,17 @@ public class CreateTaskActivity extends AppCompatActivity {
         activateDueDateFeature();
         //prep submittion
         sendCreateData();
+        //return home
+        returnHome();
+    }
+
+    private void returnHome() {
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     private void sendCreateData() {
@@ -67,6 +79,7 @@ public class CreateTaskActivity extends AppCompatActivity {
                 params.put("description", description.getText().toString());
                 params.put("due_date", dueDate.getText().toString());
                 params.put("status", ifChecked());
+                params.put("staff_id", yourLoginDetails.getId());
                 return params;
             }
         };
@@ -89,7 +102,7 @@ public class CreateTaskActivity extends AppCompatActivity {
 
     private void activateDueDateFeature() {
         //dissable keyboard
-        dueDate.setKeyListener(null);
+
         //activate date picker
         dueDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +114,7 @@ public class CreateTaskActivity extends AppCompatActivity {
     }
 
     public void popupDatePicker(){
-        DatePickerDialog.OnDateSetListener date =new DatePickerDialog.OnDateSetListener() {
+        /*DatePickerDialog.OnDateSetListener date =new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 calendar.set(Calendar.YEAR, year);
@@ -110,7 +123,21 @@ public class CreateTaskActivity extends AppCompatActivity {
                 //update dueDate UI
                 updateDueDate();
             }
-        };
+        };*/
+        String date_s = " 2011-01-18 00:00:00.0";
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyy-mm-dd hh:mm:ss");
+
+        final Calendar newCalendar = Calendar.getInstance();
+        final DatePickerDialog  StartTime = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                dueDate.setText(dateFormatter.format(newDate.getTime()));
+            }
+
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        //display the popup
+        StartTime.show();
     }
 
     private void updateDueDate(){
@@ -121,12 +148,13 @@ public class CreateTaskActivity extends AppCompatActivity {
 
     private void inflateViews() {
         title = (EditText) findViewById(R.id.title);
-        dueDate = (EditText) findViewById(R.id.date);
+        dueDate = (TextView) findViewById(R.id.date);
         description = (EditText) findViewById(R.id.description);
 
         completed = (RadioButton) findViewById(R.id.completed);
         incomplete = (RadioButton) findViewById(R.id.incomplete);
 
         createTaskButton = (TextView) findViewById(R.id.createTaskButton);
+        back = (TextView) findViewById(R.id.back);
     }
 }
